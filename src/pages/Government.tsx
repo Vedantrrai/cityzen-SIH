@@ -5,7 +5,6 @@ import {
   BarChart3, 
   Users, 
   Clock, 
-  CheckCircle, 
   AlertTriangle, 
   TrendingUp,
   MapPin,
@@ -52,7 +51,6 @@ const recentIssues = [
   }
 ];
 
-
 const departmentStats = [
   { name: "Roads", issues: 34, resolved: 28, efficiency: "89%" },
   { name: "Water", issues: 22, resolved: 20, efficiency: "95%" },
@@ -84,68 +82,69 @@ const Government = () => {
   };
 
   return (
-    <div className="p-6 pb-20 max-w-4xl mx-auto space-y-6">
-      <div className="text-center mb-8">
-        <h1 className="text-3xl font-poppins font-bold text-foreground mb-2">
+    <div className="p-4 md:p-6 pb-20 max-w-6xl mx-auto space-y-4 md:space-y-6">
+      {/* Header */}
+      <div className="text-center mb-6 md:mb-8">
+        <h1 className="text-2xl md:text-3xl font-poppins font-bold text-foreground mb-2">
           Government Dashboard
         </h1>
-        <p className="text-muted-foreground">
+        <p className="text-sm md:text-base text-muted-foreground">
           Real-time city management & analytics
         </p>
       </div>
 
       {/* Key Metrics */}
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-        <Card className="shadow-card">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <Card className="shadow-card w-full">
           <CardContent className="pt-6 text-center">
-            <div className="text-3xl font-bold text-primary mb-1">{stats.totalIssues}</div>
-            <div className="text-sm text-muted-foreground">Total Issues</div>
+            <div className="text-2xl md:text-3xl font-bold text-primary mb-1">{stats.totalIssues}</div>
+            <div className="text-xs md:text-sm text-muted-foreground">Total Issues</div>
           </CardContent>
         </Card>
         
-        <Card className="shadow-card">
+        <Card className="shadow-card w-full">
           <CardContent className="pt-6 text-center">
-            <div className="text-3xl font-bold text-accent mb-1">{stats.activeIssues}</div>
-            <div className="text-sm text-muted-foreground">Active Issues</div>
+            <div className="text-2xl md:text-3xl font-bold text-accent mb-1">{stats.activeIssues}</div>
+            <div className="text-xs md:text-sm text-muted-foreground">Active Issues</div>
           </CardContent>
         </Card>
         
-        <Card className="shadow-card">
+        <Card className="shadow-card w-full">
           <CardContent className="pt-6 text-center">
-            <div className="text-3xl font-bold text-success mb-1">{stats.resolvedToday}</div>
-            <div className="text-sm text-muted-foreground">Resolved Today</div>
+            <div className="text-2xl md:text-3xl font-bold text-success mb-1">{stats.resolvedToday}</div>
+            <div className="text-xs md:text-sm text-muted-foreground">Resolved Today</div>
           </CardContent>
         </Card>
       </div>
 
       {/* Performance Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Card className="shadow-card">
+        <Card className="shadow-card w-full">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-lg font-poppins">
+            <CardTitle className="flex items-center gap-2 text-base md:text-lg font-poppins">
               <TrendingUp size={20} className="text-primary" />
               Performance
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-muted-foreground">Avg Resolution Time</span>
+            <div className="flex justify-between items-center text-sm md:text-base">
+              <span className="text-muted-foreground">Avg Resolution Time</span>
               <span className="font-bold text-foreground">{stats.avgResolutionTime}</span>
             </div>
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-muted-foreground">Citizen Engagement</span>
+            <div className="flex justify-between items-center text-sm md:text-base">
+              <span className="text-muted-foreground">Citizen Engagement</span>
               <span className="font-bold text-primary">{stats.citizenEngagement}</span>
             </div>
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-muted-foreground">Dept Efficiency</span>
+            <div className="flex justify-between items-center text-sm md:text-base">
+              <span className="text-muted-foreground">Dept Efficiency</span>
               <span className="font-bold text-success">{stats.departmentEfficiency}</span>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="shadow-card">
+        <Card className="shadow-card w-full">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-lg font-poppins">
+            <CardTitle className="flex items-center gap-2 text-base md:text-lg font-poppins">
               <BarChart3 size={20} className="text-accent" />
               Heatmap Overview
             </CardTitle>
@@ -154,7 +153,7 @@ const Government = () => {
             <div className="aspect-square bg-gradient-to-br from-primary-light via-accent-light to-success-light rounded-lg flex items-center justify-center relative overflow-hidden">
               <div className="absolute inset-4 border-2 border-dashed border-primary/30 rounded flex items-center justify-center">
                 <div className="text-center">
-                  <MapPin size={32} className="text-primary mx-auto mb-2" />
+                  <MapPin size={28} className="text-primary mx-auto mb-2" />
                   <p className="text-sm font-medium text-primary">City Issues Heatmap</p>
                   <p className="text-xs text-muted-foreground mt-1">Interactive visualization</p>
                 </div>
@@ -165,9 +164,9 @@ const Government = () => {
       </div>
 
       {/* Department Performance */}
-      <Card className="shadow-card">
+      <Card className="shadow-card w-full">
         <CardHeader>
-          <CardTitle className="text-lg font-poppins">Department Performance</CardTitle>
+          <CardTitle className="text-base md:text-lg font-poppins">Department Performance</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
@@ -175,7 +174,7 @@ const Government = () => {
               <div key={dept.name} className="flex items-center gap-4 p-3 rounded-lg bg-muted/50">
                 <div className="flex-1">
                   <div className="font-medium text-foreground">{dept.name}</div>
-                  <div className="text-sm text-muted-foreground">
+                  <div className="text-xs md:text-sm text-muted-foreground">
                     {dept.issues} active, {dept.resolved} resolved
                   </div>
                 </div>
@@ -194,19 +193,19 @@ const Government = () => {
       </Card>
 
       {/* Recent Issues */}
-      <Card className="shadow-card">
-        <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle className="text-lg font-poppins">Recent Issues</CardTitle>
-          <Button variant="outline" size="sm" className="gap-2">
+      <Card className="shadow-card w-full">
+        <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+          <CardTitle className="text-base md:text-lg font-poppins">Recent Issues</CardTitle>
+          <Button variant="outline" size="sm" className="gap-2 w-full sm:w-auto">
             <Filter size={16} />
             Filter
           </Button>
         </CardHeader>
         <CardContent className="space-y-3">
           {recentIssues.map((issue) => (
-            <div key={issue.id} className="flex items-center gap-3 p-4 rounded-lg border bg-card">
+            <div key={issue.id} className="flex flex-col sm:flex-row sm:items-center gap-3 p-4 rounded-lg border bg-card">
               <div className="flex-1">
-                <div className="flex items-center gap-2 mb-2">
+                <div className="flex flex-wrap items-center gap-2 mb-2">
                   {getStatusIcon(issue.status)}
                   <span className="font-medium text-foreground">{issue.id}</span>
                   <Badge 
@@ -217,7 +216,7 @@ const Government = () => {
                   </Badge>
                 </div>
                 <p className="font-medium text-foreground">{issue.type}</p>
-                <div className="flex items-center gap-4 text-xs text-muted-foreground mt-1">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-xs text-muted-foreground mt-1">
                   <span className="flex items-center gap-1">
                     <MapPin size={10} />
                     {issue.location}
@@ -232,7 +231,7 @@ const Government = () => {
                   </span>
                 </div>
               </div>
-              <Button size="sm" variant="outline">
+              <Button size="sm" variant="outline" className="w-full sm:w-auto">
                 Assign
               </Button>
             </div>
@@ -241,14 +240,14 @@ const Government = () => {
       </Card>
 
       {/* Action Buttons */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-        <Button className="bg-gradient-primary hover:bg-primary-hover">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+        <Button className="bg-gradient-primary hover:bg-primary-hover w-full">
           Generate Report
         </Button>
-        <Button variant="outline">
+        <Button variant="outline" className="w-full">
           Export Data
         </Button>
-        <Button className="bg-gradient-accent hover:bg-accent-hover">
+        <Button className="bg-gradient-accent hover:bg-accent-hover w-full">
           View Analytics
         </Button>
       </div>
