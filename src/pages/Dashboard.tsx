@@ -1,222 +1,193 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Star, Trophy, MapPin, Clock, CheckCircle, AlertTriangle, TrendingUp } from "lucide-react";
-
-const userStats = {
-  name: "Vedant Rai",
-  points: 1250,
-  level: "Civic Champion",
-  issuesReported: 23,
-  issuesResolved: 18,
-  badge: "Top Reporter",
-  streak: 7
-};
-
-const recentIssues = [
-  {
-    id: "#CZ2025001",
-    type: "Pothole",
-    location: "Linking Road, Bandra West, Mumbai",
-    status: "In Progress",
-    points: 50,
-    reportedAt: "2 hours ago"
-  },
-  {
-    id: "#CZ2025002",
-    type: "Water Leak", 
-    location: "LBS Marg, Kurla, Mumbai",
-    status: "Assigned",
-    points: 30,
-    reportedAt: "5 hours ago"
-  },
-  {
-    id: "#CZ2025003",
-    type: "Streetlight",
-    location: "Marine Drive, Churchgate, Mumbai", 
-    status: "Resolved",
-    points: 100,
-    reportedAt: "1 day ago"
-  }
-];
-
-const achievements = [
-  { name: "First Report", icon: "🎯", unlocked: true },
-  { name: "Weekly Hero", icon: "⭐", unlocked: true },
-  { name: "Problem Solver", icon: "🛠️", unlocked: true },
-  { name: "City Guardian", icon: "🏆", unlocked: false }
-];
+import { Trophy, Award, Star, TrendingUp, Calendar, MapPin, Filter } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Progress } from '@/components/ui/progress';
+import { currentUser, mockUsers, mockIssues } from '@/data/mockData';
+import { cn } from '@/lib/utils';
 
 const Dashboard = () => {
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case "Resolved":
-        return <CheckCircle size={14} className="text-green-600" />;
-      case "In Progress":
-        return <Clock size={14} className="text-blue-500" />;
-      default:
-        return <AlertTriangle size={14} className="text-yellow-600" />;
-    }
+  const userIssues = mockIssues.filter(issue => issue.reportedBy === currentUser.name);
+  
+  const getRankIcon = (rank: number) => {
+    if (rank === 1) return '🥇';
+    if (rank === 2) return '🥈';
+    if (rank === 3) return '🥉';
+    return '🏅';
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "Resolved":
-        return "bg-green-500";
-      case "In Progress":
-        return "bg-blue-500";
-      default:
-        return "bg-yellow-500";
+      case 'reported': return 'status-pending';
+      case 'assigned': return 'status-assigned';
+      case 'in_progress': return 'status-progress';
+      case 'resolved': return 'status-resolved';
+      default: return 'status-pending';
     }
   };
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto space-y-6">
-      {/* Header */}
-      <div className="text-center mb-4 sm:mb-8">
-        <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
-          Dashboard
-        </h1>
-        <p className="text-muted-foreground text-sm sm:text-base">
-          Your civic engagement profile
-        </p>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-secondary/5 pb-20 relative overflow-hidden">
+      {/* Background mesh effect */}
+      <div className="absolute inset-0 civic-background-mesh" />
+      <div className="container max-w-md mx-auto px-4 py-6 relative z-10">
+        {/* Header */}
+        <div className="text-center mb-8 animate-fade-in">
+          <h1 className="text-2xl font-bold text-foreground mb-2">My Dashboard</h1>
+          <p className="text-muted-foreground">Your Maximum City contribution</p>
+        </div>
 
-      {/* Profile Card */}
-      <Card className="shadow-card bg-gradient-to-r from-indigo-500 to-purple-500 text-white">
-        <CardContent className="pt-6">
-          <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6">
-            <Avatar className="w-16 h-16 bg-white/20">
-              <AvatarFallback className="text-primary font-bold text-lg">
-                VR
-              </AvatarFallback>
-            </Avatar>
-            <div className="flex-1 text-center sm:text-left">
-              <h2 className="text-xl sm:text-2xl font-bold">{userStats.name}</h2>
-              <p className="opacity-90">{userStats.level}</p>
-              <Badge variant="secondary" className="mt-2 bg-white/20 border-0">
-                {userStats.badge}
-              </Badge>
+        {/* Profile Section */}
+        <Card className="civic-card-glass mb-6 animate-slide-up animate-glow">
+          <CardContent className="pt-6">
+            <div className="flex items-center gap-4 mb-6">
+              <Avatar className="w-16 h-16 ring-4 ring-primary/30 animate-float">
+                <AvatarFallback className="bg-gradient-primary text-white text-xl font-bold">
+                  {currentUser.name.split(' ').map(n => n[0]).join('')}
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex-1">
+                <h2 className="font-bold text-lg text-foreground">{currentUser.name}</h2>
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <Trophy className="w-4 h-4" />
+                  <span className="text-sm">Rank #{currentUser.rank}</span>
+                </div>
+              </div>
             </div>
-          </div>
 
-          <div className="grid grid-cols-3 gap-4 text-center">
-            <div>
-              <div className="text-xl sm:text-2xl font-bold">{userStats.points}</div>
-              <div className="text-xs sm:text-sm opacity-90">Points</div>
-            </div>
-            <div>
-              <div className="text-xl sm:text-2xl font-bold">{userStats.issuesReported}</div>
-              <div className="text-xs sm:text-sm opacity-90">Reported</div>
-            </div>
-            <div>
-              <div className="text-xl sm:text-2xl font-bold">{userStats.streak}</div>
-              <div className="text-xs sm:text-sm opacity-90">Day Streak</div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+            {/* Points & Stats */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Star className="w-5 h-5 text-secondary" />
+                  <span className="font-semibold text-foreground">Points</span>
+                </div>
+                <span className="text-2xl font-bold text-primary">{currentUser.points.toLocaleString()}</span>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div className="text-center">
+                  <p className="text-2xl font-bold text-primary">{currentUser.issuesReported}</p>
+                  <p className="text-xs text-muted-foreground">Issues Reported</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-2xl font-bold text-secondary">{currentUser.issuesResolved}</p>
+                  <p className="text-xs text-muted-foreground">Issues Resolved</p>
+                </div>
+              </div>
 
-      {/* Quick Stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="shadow-card">
-          <CardContent className="pt-6 text-center">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-2">
-              <CheckCircle size={20} className="text-green-600" />
+              {/* Progress to next rank */}
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Progress to Rank #{currentUser.rank - 1}</span>
+                  <span className="font-medium text-foreground">85%</span>
+                </div>
+                <Progress value={85} className="h-2" />
+                <p className="text-xs text-muted-foreground">180 more points needed</p>
+              </div>
             </div>
-            <div className="text-lg sm:text-2xl font-bold text-foreground">
-              {userStats.issuesResolved}
-            </div>
-            <div className="text-xs sm:text-sm text-muted-foreground">Resolved</div>
           </CardContent>
         </Card>
 
-        <Card className="shadow-card">
-          <CardContent className="pt-6 text-center">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2">
-              <TrendingUp size={20} className="text-blue-500" />
+        {/* Badges Section */}
+        <Card className="civic-card-glass mb-6 animate-slide-up animate-shimmer" style={{ animationDelay: '100ms' }}>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-primary">
+              <Award className="w-5 h-5 animate-bounce" />
+              Badges ({currentUser.badges.length})
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 gap-3">
+              {currentUser.badges.map((badge, index) => (
+                <div
+                  key={badge.id}
+                  className="flex items-center gap-3 p-3 rounded-lg bg-gradient-card border border-border/50 animate-bounce-in"
+                  style={{ animationDelay: `${(index + 1) * 150}ms` }}
+                >
+                  <div className="text-2xl">{badge.icon}</div>
+                  <div className="flex-1">
+                    <p className="font-medium text-sm text-foreground">{badge.name}</p>
+                    <p className="text-xs text-muted-foreground">{badge.description}</p>
+                  </div>
+                </div>
+              ))}
             </div>
-            <div className="text-lg sm:text-2xl font-bold text-foreground">78%</div>
-            <div className="text-xs sm:text-sm text-muted-foreground">Success Rate</div>
           </CardContent>
         </Card>
-      </div>
 
-      {/* Recent Issues */}
-      <Card className="shadow-card">
-        <CardHeader>
-          <CardTitle className="text-base sm:text-lg">Recent Reports</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          {recentIssues.map((issue) => (
-            <div
-              key={issue.id}
-              className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 p-3 rounded-lg bg-muted/50"
-            >
-              <div>
-                <div className="flex items-center gap-2 mb-1">
-                  {getStatusIcon(issue.status)}
-                  <span className="font-medium text-sm">{issue.id}</span>
-                  <Badge
-                    variant="outline"
-                    className={`${getStatusColor(issue.status)} text-white border-0 text-xs`}
-                  >
-                    {issue.status}
+        {/* My Issues */}
+        <Card className="civic-card-glass mb-6 animate-slide-up" style={{ animationDelay: '200ms' }}>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-primary">
+              <MapPin className="w-5 h-5 animate-pulse" />
+              My Issues ({userIssues.length})
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {userIssues.map((issue, index) => (
+                <div
+                  key={issue.id}
+                  className="flex items-center justify-between p-3 rounded-lg bg-gradient-card border border-border/50 animate-fade-in"
+                  style={{ animationDelay: `${(index + 3) * 100}ms` }}
+                >
+                  <div className="flex-1">
+                    <p className="font-medium text-sm text-foreground mb-1">{issue.title}</p>
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <Calendar className="w-3 h-3" />
+                      {issue.reportedAt.toLocaleDateString()}
+                    </div>
+                  </div>
+                  <Badge className={cn("border", getStatusColor(issue.status))}>
+                    {issue.status.replace('_', ' ')}
                   </Badge>
                 </div>
-                <p className="text-sm font-medium">{issue.type}</p>
-                <p className="text-xs text-muted-foreground flex items-center gap-1">
-                  <MapPin size={10} />
-                  {issue.location} • {issue.reportedAt}
-                </p>
-              </div>
-              <div className="text-right">
-                <div className="text-sm font-bold text-primary">+{issue.points}</div>
-                <div className="text-xs text-muted-foreground">pts</div>
-              </div>
+              ))}
             </div>
-          ))}
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
 
-      {/* Achievements */}
-      <Card className="shadow-card">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
-            <Trophy size={18} className="text-yellow-500" />
-            Achievements
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            {achievements.map((achievement) => (
-              <div
-                key={achievement.name}
-                className={`
-                  p-3 rounded-lg text-center border-2 transition-all
-                  ${achievement.unlocked
-                    ? "bg-blue-100 border-blue-400 text-blue-600"
-                    : "bg-muted border-muted-foreground/20 text-muted-foreground"
-                  }
-                `}
-              >
-                <div className="text-xl sm:text-2xl mb-1">{achievement.icon}</div>
-                <div className="text-xs sm:text-sm font-medium">{achievement.name}</div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Action Buttons */}
-      <div className="space-y-3 sm:space-y-0 sm:flex sm:gap-3">
-        <Button className="w-full sm:w-1/2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white">
-          View Full History
-        </Button>
-        <Button variant="outline" className="w-full sm:w-1/2">
-          Share Progress
-        </Button>
+        {/* Leaderboard Preview */}
+        <Card className="civic-card-glass animate-slide-up animate-glow" style={{ animationDelay: '300ms' }}>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-primary">
+              <TrendingUp className="w-5 h-5 animate-bounce" />
+              Leaderboard
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {mockUsers.slice(0, 5).map((user, index) => (
+                <div
+                  key={user.id}
+                  className={cn(
+                    "flex items-center gap-3 p-3 rounded-lg transition-all animate-fade-in",
+                    user.id === currentUser.id 
+                      ? "bg-gradient-secondary/10 border-2 border-secondary/30 shadow-medium" 
+                      : "bg-gradient-card border border-border/50"
+                  )}
+                  style={{ animationDelay: `${(index + 4) * 100}ms` }}
+                >
+                  <div className="text-2xl">{getRankIcon(user.rank)}</div>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                      <p className="font-medium text-sm text-foreground">{user.name}</p>
+                      {user.id === currentUser.id && (
+                        <Badge variant="secondary" className="text-xs">You</Badge>
+                      )}
+                    </div>
+                    <p className="text-xs text-muted-foreground">{user.points.toLocaleString()} points</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-bold text-sm text-primary">#{user.rank}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
